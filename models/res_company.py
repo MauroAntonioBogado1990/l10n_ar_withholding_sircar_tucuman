@@ -7,9 +7,9 @@ _logger = logging.getLogger(__name__)
 class ResCompany(models.Model):
     _inherit = "res.company"
 
-    tax_per_agip = fields.Many2one(
+    tax_per_tucuman = fields.Many2one(
         'account.tax',
-        'Impuesto de Percepción AGIP',
+        'Impuesto de Percepción Tucuman',
         domain=[('type_tax_use', '=', 'sale'),('tax_group_id.l10n_ar_tribute_afip_code','=','07')], 
         company_dependent=True
     )

@@ -8,7 +8,8 @@
         <field name="arch" type="xml">
 
             <field name="withholding_python_compute" position="after">
-                <field name="tax_tucuman_ret" attrs="{'invisible': [('withholding_type', '!=', 'partner_iibb_padron')]}" colspan="2"/>
+                <!-- <field name="tax_tucuman_ret" attrs="{'invisible': [('withholding_type', '!=', 'partner_iibb_padron')]}" colspan="2"/> -->
+                <field name="tax_tucuman_ret" invisible="('withholding_type', '!=', 'partner_iibb_padron')" colspan="2"/>
             </field>
 
         </field>
