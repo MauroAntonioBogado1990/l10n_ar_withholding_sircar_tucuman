@@ -16,8 +16,9 @@
         'base',
         'account',
         'l10n_ar',
-        'l10n_ar_withholding',
+        #'l10n_ar_withholding',
+        'l10n_ar_sircar_regimenes',
     ],
     'installable': True,
-    'version': '16.0.1.0.0',
+    'version': '18.0.1.0.0',
 }

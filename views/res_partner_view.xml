@@ -9,7 +9,7 @@
                 <page name="fiscal_data" position="inside">
                     <h3 style="text-align: center;">Retenciones IIBB Tucuman</h3>
                     <field name="alicuot_ret_tucuman_ids">
-                        <tree string="Retenciones IIBB Tucuman" editable="bottom">
+                        <list string="Retenciones IIBB Tucuman" editable="bottom">
                             <field name="publication_date"/>
                             <field name="effective_date_from"/>
                             <field name="effective_date_to"/>
@@ -18,11 +18,11 @@
                             <field name="cambio"/>
                             <field name="a_ret"/>
                             <field name="nro_grupo_ret"/>
-                        </tree>
+                        </list>
                     </field>
                     <h3 style="text-align: center;">Percepciones IIBB Tucuman</h3>
                     <field name="alicuot_per_tucuman_ids">
-                        <tree string="Percepciones IIBB Tucuman" editable="bottom">
+                        <list string="Percepciones IIBB Tucuman" editable="bottom">
                             <field name="publication_date"/>
                             <field name="effective_date_from"/>
                             <field name="effective_date_to"/>
@@ -31,7 +31,7 @@
                             <field name="cambio"/>
                             <field name="a_per"/>
                             <field name="nro_grupo_per"/>
-                        </tree>
+                        </list>
                     </field>
                 </page>
 

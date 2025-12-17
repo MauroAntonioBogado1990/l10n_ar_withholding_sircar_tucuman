@@ -42,15 +42,15 @@
          </field>
     </record>
 
-    <record id="view_account_export_tucuman_tree" model="ir.ui.view">
-         <field name="name">account.export.tucuman.tree</field>
+    <record id="view_account_export_tucuman_list" model="ir.ui.view">
+         <field name="name">account.export.tucuman.list</field>
          <field name="model">account.export.tucuman</field>
          <field name="arch" type="xml">
-            <tree>
+            <list>
 		<field name="name" />
 		<field name="date_from" />
 		<field name="date_to" />
-            </tree>
+            </list>
          </field>
     </record>
 
