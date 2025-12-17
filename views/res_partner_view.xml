@@ -3,7 +3,9 @@
         <record id="view_partner_iibb_tucuman_form" model="ir.ui.view">
             <field name="name">res.partner.form</field>
             <field name="model">res.partner</field>
-            <field name="inherit_id" ref="l10n_ar_withholding.view_partner_property_form"/>
+            <!--<field name="inherit_id" ref="l10n_ar_withholding.view_partner_property_form"/>--> 
+            <!-- <field name="inherit_id" ref="l10n_ar_partner.view_partner_property_form"/> -->
+            <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
 
                 <page name="fiscal_data" position="inside">

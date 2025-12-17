@@ -7,8 +7,9 @@
 		<field name="arch" type="xml">
 			<form string="Importar Padron Tucuman">
 				<header>
-					<button name="btn_process" type="object" string="Procesar" states="draft" />
-					<field name="state" widget="statusbar" />
+					<button name="btn_process" type="object" string="Procesar" invisible="state != 'draft'"/>
+    				<field name="state" widget="statusbar" statusbar_visible="draft,processed"/>
+
 				</header>
 				<sheet>
 					<group>
@@ -47,16 +48,16 @@
 		</field>
 	</record>
 
-	<record model="ir.actions.act_window" id="action_import_padron_agip">
+	<record model="ir.actions.act_window" id="action_import_padron_tucuman">
 		<field name="name">Cargar Padron Tucuman</field>
-		<field name="res_model">import.padron.agip</field>
+		<field name="res_model">import.padron.tucuman</field>
 		<field name="view_mode">list,form</field>
 	</record>
 
 
-	<menuitem name="Carga padron AGIP" id="import_padron_agip_form"
+	<menuitem name="Carga padron Tucuman" id="import_padron_tucuman_form"
 		parent="account.account_account_menu"
-		action="action_import_padron_agip"
+		action="action_import_padron_tucuman"
 		sequence="1"/>
 
 </odoo>
