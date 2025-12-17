@@ -17,51 +17,50 @@ class AccountExportTucuman(models.Model):
     name = fields.Char('Nombre')
     date_from = fields.Date('Fecha desde')
     date_to = fields.Date('Fecha hasta')
-    export_agip_data_ret = fields.Text('Contenidos archivo AGIP RET', default='')
-    export_agip_data_per = fields.Text('Contenidos archivo AGIP PER', default='')
-    export_agip_data_nc = fields.Text('Contenidos archivo AGIP NC PER', default='')
-    export_agip_data = fields.Text('Contenidos archivo AGIP', default='')
-    tax_withholding = fields.Many2one('account.tax','Imp. de ret utilizado', domain=[('tax_agip_ret', '=', True)]) 
+    export_tucuman_data_ret = fields.Text('Contenidos archivo TUCUMAN RET', default='')
+    export_tucuman_data_per = fields.Text('Contenidos archivo TUCUMAN PER', default='')
+    export_tucuman_data_nc = fields.Text('Contenidos archivo TUCUMAN NC PER', default='')
+    export_tucuman_data = fields.Text('Contenidos archivo TUCUMAN', default='')
+    tax_withholding = fields.Many2one('account.tax','Imp. de ret utilizado', domain=[('tax_tucuman_ret', '=', True)]) 
     
-    @api.depends('export_agip_data')
+    @api.depends('export_tucuman_data')
     def _compute_files_nc(self):
         self.ensure_one()
-        self.export_agip_filename = _('Agip_%s_%s.txt') % (str(self.date_from),str(self.date_to))
-        self.export_agip_file = base64.encodestring(self.export_agip_data.encode('ISO-8859-1'))
+        self.export_tucuman_filename = _('Tucuman_%s_%s.txt') % (str(self.date_from),str(self.date_to))
+        self.export_tucuman_file = base64.encodestring(self.export_tucuman_data.encode('ISO-8859-1'))
 
-    export_agip_file = fields.Binary('Archivo AGIP',compute=_compute_files_nc)
-    export_agip_filename = fields.Char('Archivo AGIP',compute=_compute_files_nc)
+    export_tucuman_file = fields.Binary('Archivo TUCUMAN',compute=_compute_files_nc)
+    export_tucuman_filename = fields.Char('Archivo TUCUMAN',compute=_compute_files_nc)
     
-    @api.depends('export_agip_data_nc')
+    @api.depends('export_tucuman_data_nc')
     def _compute_files_nc(self):
         self.ensure_one()
-        self.export_agip_filename_nc = _('Agip_nc_%s_%s.txt') % (str(self.date_from),str(self.date_to))
-        self.export_agip_file_nc = base64.encodestring(self.export_agip_data_nc.encode('ISO-8859-1'))
+        self.export_tucuman_filename_nc = _('Tucuman_nc_%s_%s.txt') % (str(self.date_from),str(self.date_to))
+        self.export_tucuman_file_nc = base64.encodestring(self.export_tucuman_data_nc.encode('ISO-8859-1'))
 
-    export_agip_file_nc = fields.Binary('Archivo AGIP',compute=_compute_files_nc)
-    export_agip_filename_nc = fields.Char('Archivo AGIP',compute=_compute_files_nc)
+    export_tucuman_file_nc = fields.Binary('Archivo TUCUMAN',compute=_compute_files_nc)
+    export_tucuman_filename_nc = fields.Char('Archivo TUCUMAN',compute=_compute_files_nc)
     
-    @api.depends('export_agip_data_ret')
+    @api.depends('export_tucuman_data_ret')
     def _compute_files_ret(self):
         self.ensure_one()
-        self.export_agip_filename_ret = _('Agip_ret_%s_%s.txt') % (str(self.date_from),str(self.date_to))
-        self.export_agip_file_ret = base64.encodestring(self.export_agip_data_ret.encode('ISO-8859-1'))
+        self.export_tucuman_filename_ret = _('Tucuman_ret_%s_%s.txt') % (str(self.date_from),str(self.date_to))
+        self.export_tucuman_file_ret = base64.encodestring(self.export_tucuman_data_ret.encode('ISO-8859-1'))
 
-    export_agip_file_ret = fields.Binary('Archivo AGIP',compute=_compute_files_ret)
-    export_agip_filename_ret = fields.Char('Archivo AGIP',compute=_compute_files_ret)
+    export_tucuman_file_ret = fields.Binary('Archivo TUCUMAN',compute=_compute_files_ret)
+    export_tucuman_filename_ret = fields.Char('Archivo TUCUMAN',compute=_compute_files_ret)
     
-    @api.depends('export_agip_data_per')
+    @api.depends('export_tucuman_data_per')
     def _compute_files_per(self):
         self.ensure_one()
-        self.export_agip_filename_per = _('Agip_per_%s_%s.txt') % (str(self.date_from),str(self.date_to))
-        self.export_agip_file_per = base64.encodestring(self.export_agip_data_per.encode('ISO-8859-1'))
+        self.export_tucuman_filename_per = _('Tucuman_per_%s_%s.txt') % (str(self.date_from),str(self.date_to))
+        self.export_tucuman_file_per = base64.encodestring(self.export_tucuman_data_per.encode('ISO-8859-1'))
+    export_tucuman_file_per = fields.Binary('Archivo TUCUMAN',compute=_compute_files_per)
+    export_tucuman_filename_per = fields.Char('Archivo TUCUMAN',compute=_compute_files_per)
 
-    export_agip_file_per = fields.Binary('Archivo AGIP',compute=_compute_files_per)
-    export_agip_filename_per = fields.Char('Archivo AGIP',compute=_compute_files_per)
 
-
-    def compute_agip_data(self):
-        list_order_agip = []
+    def compute_tucuman_data(self):
+        list_order_tucuman = []
         self.ensure_one()
         windows_line_ending = '\r' + '\n'
         payments = self.env['account.payment'].search([('payment_type','=','outbound'),('state','not in',['cancel','draft']),('date','<=',self.date_to),('date','>=',self.date_from)])
@@ -216,10 +215,10 @@ class AccountExportTucuman(models.Model):
             
             # CRLF
             string = string + windows_line_ending
-            list_order_agip.append({'Fecha':[string[-223:-213]],'Texto':string[-227:]})
+            list_order_tucuman.append({'Fecha':[string[-223:-213]],'Texto':string[-227:]})
             
         _logger.warning('******* string: {0}'.format(string))
-        self.export_agip_data_ret = string
+        self.export_tucuman_data_ret = string
 
         # Percepciones
         invoices = self.env['account.move'].search([('move_type','in',['out_invoice']),('state','=','posted'),('invoice_date','<=',self.date_to),('invoice_date','>=',self.date_from)],order='invoice_date asc')
@@ -227,7 +226,8 @@ class AccountExportTucuman(models.Model):
         for invoice in invoices:
             taxes = json.loads(invoice.tax_totals_json)['groups_by_subtotal']['Importe libre de impuestos']
             for tax in taxes:
-                if tax['tax_group_name'] == 'Perc IIBB CABA':
+                #este es un posible donde puede ser el de tucumand, habría que verificar cual es el nombre de percepción tucuman
+                if tax['tax_group_name'] == 'Perc IIBB Tucuman':
                     _alicuota_per = invoice.partner_id.alicuot_per_agip_ids.filtered(lambda l: l.effective_date_from == self.date_from)[0].a_per
                     if not _alicuota_per and _alicuota_per != 0.00:
                         raise ValidationError('No se encontro un padron en el cliente {0} de fecha {1} para calcular su alicuota de percepcion'.format(invoice.partner_id.name, self.date_from))
@@ -235,7 +235,7 @@ class AccountExportTucuman(models.Model):
                     #Multimoneda
                     if invoice.currency_id.name != 'ARS':
                         for ml in invoice.line_ids:
-                            if ml.name == 'Percepción IIBB CABA Aplicada':
+                            if ml.name == 'Percepción IIBB Tucuman Aplicada':
                                 if invoice.move_type == 'out_refund':
                                     tax_group_amount = ml.debit
                                 else:
@@ -427,18 +427,18 @@ class AccountExportTucuman(models.Model):
                     
                     # CRLF
                     string = string + windows_line_ending
-                    list_order_agip.append({'Fecha':[string[-223:-213]],'Texto':string[-227:]})
+                    list_order_tucuman.append({'Fecha':[string[-223:-213]],'Texto':string[-227:]})
                     
                 _logger.warning('******* string: {0}'.format(string))
                 self.export_agip_data_per = string
         
         #Ordenamos Retenciones y Percepciones en un mismo txt
-        ordenado = sorted(list_order_agip, key=lambda ret : ret['Fecha'])
+        ordenado = sorted(list_order_tucuman, key=lambda ret : ret['Fecha'])
         string_ordenado = ''
-        self.export_agip_data = ''
+        self.export_tucuman_data = ''
         for o in ordenado:
             string_ordenado = string_ordenado + o['Texto']
-        self.export_agip_data = string_ordenado
+        self.export_tucuman_data = string_ordenado
 
         # Notas de credito
         invoices = self.env['account.move'].search([('move_type','in',['out_refund']),('state','=','posted'),('invoice_date','<=',self.date_to),('invoice_date','>=',self.date_from)],order='invoice_date asc')
@@ -446,11 +446,11 @@ class AccountExportTucuman(models.Model):
         for invoice in invoices:
             taxes = json.loads(invoice.tax_totals_json)['groups_by_subtotal']['Importe libre de impuestos']
             for tax in taxes:
-                if tax['tax_group_name'] == 'Perc IIBB CABA':
+                if tax['tax_group_name'] == 'Perc IIBB Tucuman':
                     #Multimoneda
                     if invoice.currency_id.name != 'ARS':
                         for ml in invoice.line_ids:
-                            if ml.name == 'Percepción IIBB CABA Aplicada':
+                            if ml.name == 'Percepción IIBB Tucuman Aplicada':
                                 if invoice.move_type == 'out_refund':
                                     tax_group_amount = ml.debit
                                 else:
@@ -533,9 +533,9 @@ class AccountExportTucuman(models.Model):
                     # 9 campo Nro de documento del Retenido / Percibido. Largo: 11
                     string = string + invoice.partner_id.vat
                     # 10 campo Código de Norma: Según Tipo de Operación
-                    if not self.env.user.company_id.regimen_agip_per:
+                    if not self.env.user.company_id.regimen_tucuman_per:
                         raise ValidationError('Debe seleccionar un código de norma de AGIP para la compania ' + self.env.user.company_id.name)
-                    string = string + self.env.user.company_id.regimen_agip_per.zfill(3)
+                    string = string + self.env.user.company_id.regimen_tucuman_per.zfill(3)
                     # 11 campo Fecha de Retención /Percepción : dd/mm/aaaa
                     string = string + str(invoice.invoice_date)[8:10] + '/' + str(invoice.invoice_date)[5:7] + '/' + str(invoice.invoice_date)[:4]
                     # 12 Retención / Percepción a deducir . Largo 16.

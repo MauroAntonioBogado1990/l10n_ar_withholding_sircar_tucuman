@@ -14,7 +14,8 @@ class ResCompany(models.Model):
         company_dependent=True
     )
 
-    regimen_agip_ret = fields.Selection([
+    #aqui habrá que ver como seran los valores de seleccion de tucuman
+    regimen_tucuman_ret = fields.Selection([
         ('1','1 - COMPAÑIAS DE SEGUROS'),
         ('2','2 - ORD. 40434 PROVEEDORES GCBA – RESOLUCIÓN Nº 200/AGIP/2002'),
         ('3','3 - OBRAS Y SERVICIOS SOCIALES, MUTUALES Y MEDICINA PREPAGA'),
@@ -34,7 +35,8 @@ class ResCompany(models.Model):
         ('31','31 - SERVICIOS DE GESTIÓN Y/O PROCESAMIENTO DE PAGOS PLATAFORMAS Y APLICACIONES INFORMÁTICAS - (Vigente desde 01/02/2020)'),
     ],'Regimen Retenciones AGIP', company_dependent=True)
     
-    regimen_agip_per = fields.Selection([
+    #aqui habrá que ver como seran los valores de seleccion de tucuman
+    regimen_tucuman_per = fields.Selection([
         ('10', '10 - PRODUCTORES DE COMBUSTIBLES LÍQUIDOS, GAS NATURAL Y COMERCIALIZADORES MAYORISTAS'),
         ('11', '11 - VENTAS DE PRODUCTOS DERIVADOS DEL PETRÓLEO (ACEITES, LUBRICANTES, ETC)'),
         ('12', '12 - PRODUCCIÓN ELABORACIÓN Y FABRICACIÓN DE PRODUCTOS COMESTIBLES Y BEBIDAS'),

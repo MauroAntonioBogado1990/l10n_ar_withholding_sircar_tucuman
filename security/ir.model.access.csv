@@ -1,7 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_account_export_agip,account_export_agip_user,model_account_export_agip,base.group_user,1,1,1,1
-access_import_padron_agip,import_padron_agip_user,model_import_padron_agip,base.group_user,1,1,1,1
-access_agip_padron,agip_padron_user,model_agip_padron,base.group_user,1,1,1,1
-access_partner_padron_agip_ret,access_partner_padron_agip_ret,model_partner_padron_agip_ret,base.group_user,1,1,1,1
-access_partner_padron_agip_per,access_partner_padron_agip_per,model_partner_padron_agip_per,base.group_user,1,1,1,1
+access_account_export_tucuman,account_export_tucuman_user,model_account_export_tucuman,base.group_user,1,1,1,1
+access_import_padron_tucuman,import_padron_tucuman_user,model_import_padron_tucuman,base.group_user,1,1,1,1
+access_tucuman_padron,tucuman_padron_user,model_tucuman_padron,base.group_user,1,1,1,1
+access_partner_padron_tucuman_ret,access_partner_padron_tucuman_ret,model_partner_padron_tucuman_ret,base.group_user,1,1,1,1
+access_partner_padron_tucuman_per,access_partner_padron_tucuman_per,model_partner_padron_tucuman_per,base.group_user,1,1,1,1
 

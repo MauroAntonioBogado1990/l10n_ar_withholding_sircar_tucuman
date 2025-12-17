@@ -1,5 +1,5 @@
 {
-    'name': 'Export TXT RET/PER AGIP',
+    'name': 'Export TXT RET/PER TUCUMAN',
     'license': 'AGPL-3',
     'author': 'ADHOC SA, Moldeo Interactive, Exemax, Codize',
     'category': 'Accounting & Finance',
