@@ -2,10 +2,10 @@
 <odoo>
 
 	<record model="ir.ui.view" id="import_padron_agip_view_form">
-		<field name="name">import.padron.agip.view.form</field>
-		<field name="model">import.padron.agip</field>
+		<field name="name">import.padron.tucuman.view.form</field>
+		<field name="model">import.padron.tucuman</field>
 		<field name="arch" type="xml">
-			<form string="Importar Padron AGIP">
+			<form string="Importar Padron Tucuman">
 				<header>
 					<button name="btn_process" type="object" string="Procesar" states="draft" />
 					<field name="state" widget="statusbar" />
@@ -35,11 +35,11 @@
 		</field>
 	</record>
 
-	<record model="ir.ui.view" id="import_padron_agip_tree">
-		<field name="name">import.padron.agip.view.tree</field>
-		<field name="model">import.padron.agip</field>
+	<record model="ir.ui.view" id="import_padron_tucuman_tree">
+		<field name="name">import.padron.tucuman.view.tree</field>
+		<field name="model">import.padron.tucuman</field>
 		<field name="arch" type="xml">
-		<tree string="Import Padron AGIP">
+		<tree string="Import Padron Tucuman">
 			<field name="name" />
 			<field name="padron_file" />
 			<field name="state" />
@@ -48,7 +48,7 @@
 	</record>
 
 	<record model="ir.actions.act_window" id="action_import_padron_agip">
-		<field name="name">Cargar Padron AGIP</field>
+		<field name="name">Cargar Padron Tucuman</field>
 		<field name="res_model">import.padron.agip</field>
 		<field name="view_mode">tree,form</field>
 	</record>

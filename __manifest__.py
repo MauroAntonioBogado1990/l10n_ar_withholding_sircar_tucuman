@@ -4,9 +4,9 @@
     'author': 'ADHOC SA, Moldeo Interactive, Exemax, Codize',
     'category': 'Accounting & Finance',
     'data': [
-        'views/account_export_agip_view.xml',
-        'views/agip_padron.xml',
-        'views/import_padron_agip_view.xml',
+        'views/account_export_tucuman_view.xml',
+        'views/tucuman_padron.xml',
+        'views/import_padron_tucuman_view.xml',
         'views/res_partner_view.xml',
         'views/account_tax_inherit_view.xml',
         'views/res_company_view.xml',
