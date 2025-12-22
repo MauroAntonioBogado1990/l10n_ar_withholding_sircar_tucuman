@@ -16,7 +16,20 @@ class AccountMoveInherit(models.Model):
             if not self.invoice_date:
                 self.invoice_date = date.today()
             if self.invoice_line_ids:
-                if self.partner_id:
+                #SE COMENTA ESTE ORIGINAL
+                #if self.partner_id:
+                if self.partner_id and len(self.partner_id.alicuot_per_tucuman_ids) > 0:
+                    imp_per_tucuman = self.company_id.tax_per_tucuman
+                    if not imp_per_tucuman:
+                        return super().calculate_perceptions()
+
+                    # LLAMADA AL NUEVO CÁLCULO
+                    # Ahora get_amount_alicuot_tucuman devuelve el valor final procesado
+                    new_amount = self.partner_id.get_amount_alicuot_tucuman('per', self.invoice_date)
+                    
+                    # Asignamos el porcentaje calculado al impuesto de la factura
+                    imp_per_tucuman.amount = new_amount        
+                    #SE AGREGO ESTO DE ACÁ ARRIBA, LO DE ABAJO ES EL ORIGINAL
                     if len(self.partner_id.alicuot_per_tucuman_ids) > 0:
                         #Busco el impuesto a utilizar para la percepcion
                         imp_per_tucuman = self.company_id.tax_per_tucuman

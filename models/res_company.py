@@ -14,6 +14,9 @@ class ResCompany(models.Model):
         company_dependent=True
     )
 
+    #esto se agrega para poder tener el porcentaje
+    # Porcentaje general para Tucumán (ejemplo: 2.50)
+    
     #aqui habrá que ver como seran los valores de seleccion de tucuman
     regimen_tucuman_ret = fields.Selection([
         ('1','1 - COMPAÑIAS DE SEGUROS'),

@@ -10,7 +10,10 @@
             <field name="arch" type="xml">
 
                 <!-- <page name="fiscal_data" position="inside"> -->
-                <page name="internal_notes" position="after">
+                <xpath expr="//page[@name='internal_notes']" position="after">
+                <!-- <page name="internal_notes" position="after"> -->
+                <!--Original-->
+                <page name="Per/Ret Tucuman" position="after">
                 
                     <h3 style="text-align: center;">Retenciones IIBB Tucuman</h3>
                     <field name="alicuot_ret_tucuman_ids">
@@ -39,7 +42,7 @@
                         </list>
                     </field>
                 </page>
-
+               </xpath>
             </field>
     </record>
 
