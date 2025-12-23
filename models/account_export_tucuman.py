@@ -1,62 +1,97 @@
 # -*- coding: utf-8 -*-
-# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+# Licencia AGPL-3.0 o posterior.
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
-from datetime import datetime,date,timedelta
+from datetime import datetime, date, timedelta
 from dateutil import relativedelta
 import base64
 import logging
 import json
+
 _logger = logging.getLogger(__name__)
 
 class AccountExportTucuman(models.Model):
+    """
+    Esta clase representa una herramienta para exportar archivos de impuestos 
+    específicos de la provincia de Tucumán (Argentina). 
+    Su objetivo es recopilar datos de retenciones y percepciones para generar 
+    archivos de texto (.txt) que se presentan ante los entes recaudadores.
+    """
     _name = 'account.export.tucuman'
-    _description = 'account.export.tucuman'
+    _description = 'Exportación de archivos fiscales - Tucumán'
 
-    name = fields.Char('Nombre')
-    date_from = fields.Date('Fecha desde')
-    date_to = fields.Date('Fecha hasta')
-    export_tucuman_data_ret = fields.Text('Contenidos archivo TUCUMAN RET', default='')
-    export_tucuman_data_per = fields.Text('Contenidos archivo TUCUMAN PER', default='')
-    export_tucuman_data_nc = fields.Text('Contenidos archivo TUCUMAN NC PER', default='')
-    export_tucuman_data = fields.Text('Contenidos archivo TUCUMAN', default='')
-    tax_withholding = fields.Many2one('account.tax','Imp. de ret utilizado', domain=[('tax_tucuman_ret', '=', True)]) 
+    # --- CAMPOS DE CONFIGURACIÓN Y FILTROS ---
+    name = fields.Char('Nombre')  # Identificador o título del reporte (ej. "Exportación Mayo 2023")
+    date_from = fields.Date('Fecha desde')  # Fecha de inicio del periodo a exportar
+    date_to = fields.Date('Fecha hasta')    # Fecha de fin del periodo a exportar
+
+    # --- CAMPOS DE TEXTO (Almacenan el contenido "en crudo") ---
+    # Estos campos guardan el texto que se escribirá dentro de los archivos .txt
+    export_tucuman_data_ret = fields.Text('Contenidos archivo TUCUMAN RET', default='') # Datos de Retenciones
+    export_tucuman_data_per = fields.Text('Contenidos archivo TUCUMAN PER', default='') # Datos de Perceptions
+    export_tucuman_data_nc = fields.Text('Contenidos archivo TUCUMAN NC PER', default='') # Datos de Notas de Crédito
+    export_tucuman_data = fields.Text('Contenidos archivo TUCUMAN', default='') # Datos generales o genéricos
+
+    # Relación con el impuesto específico de retención de Tucumán configurado en el sistema
+    tax_withholding = fields.Many2one('account.tax', 'Imp. de ret utilizado', 
+                                      domain=[('tax_tucuman_ret', '=', True)]) 
+    
+    # --- FUNCIONES DE PROCESAMIENTO (Cálculo de archivos) ---
     
     @api.depends('export_tucuman_data')
-    def _compute_files_nc(self):
-        self.ensure_one()
-        self.export_tucuman_filename = _('Tucuman_%s_%s.txt') % (str(self.date_from),str(self.date_to))
-        self.export_tucuman_file = base64.encodestring(self.export_tucuman_data.encode('ISO-8859-1'))
+    def _compute_files_generic(self):
+        """
+        Toma el contenido de texto genérico y lo convierte en un archivo descargable.
+        Genera un nombre automático: Tucuman_FechaDesde_FechaHasta.txt
+        """
+        for rec in self:
+            rec.export_tucuman_filename = _('Tucuman_%s_%s.txt') % (str(rec.date_from), str(rec.date_to))
+            # Se codifica el texto a formato base64 para que Odoo lo pueda tratar como un archivo binario
+            rec.export_tucuman_file = base64.encodestring(rec.export_tucuman_data.encode('ISO-8859-1'))
 
-    export_tucuman_file = fields.Binary('Archivo TUCUMAN',compute=_compute_files_nc)
-    export_tucuman_filename = fields.Char('Archivo TUCUMAN',compute=_compute_files_nc)
+    # Campos que almacenan el archivo físico y su nombre (basados en la función de arriba)
+    export_tucuman_file = fields.Binary('Archivo TUCUMAN', compute=_compute_files_generic)
+    export_tucuman_filename = fields.Char('Nombre Archivo TUCUMAN', compute=_compute_files_generic)
     
     @api.depends('export_tucuman_data_nc')
     def _compute_files_nc(self):
-        self.ensure_one()
-        self.export_tucuman_filename_nc = _('Tucuman_nc_%s_%s.txt') % (str(self.date_from),str(self.date_to))
-        self.export_tucuman_file_nc = base64.encodestring(self.export_tucuman_data_nc.encode('ISO-8859-1'))
+        """
+        Convierte el contenido de Notas de Crédito en un archivo descargable (.txt).
+        """
+        for rec in self:
+            rec.export_tucuman_filename_nc = _('Tucuman_nc_%s_%s.txt') % (str(rec.date_from), str(rec.date_to))
+            rec.export_tucuman_file_nc = base64.encodestring(rec.export_tucuman_data_nc.encode('ISO-8859-1'))
 
-    export_tucuman_file_nc = fields.Binary('Archivo TUCUMAN',compute=_compute_files_nc)
-    export_tucuman_filename_nc = fields.Char('Archivo TUCUMAN',compute=_compute_files_nc)
+    # Campos para el archivo de Notas de Crédito
+    export_tucuman_file_nc = fields.Binary('Archivo NC', compute=_compute_files_nc)
+    export_tucuman_filename_nc = fields.Char('Nombre Archivo NC', compute=_compute_files_nc)
     
     @api.depends('export_tucuman_data_ret')
     def _compute_files_ret(self):
-        self.ensure_one()
-        self.export_tucuman_filename_ret = _('Tucuman_ret_%s_%s.txt') % (str(self.date_from),str(self.date_to))
-        self.export_tucuman_file_ret = base64.encodestring(self.export_tucuman_data_ret.encode('ISO-8859-1'))
+        """
+        Convierte el contenido de Retenciones en un archivo descargable (.txt).
+        """
+        for rec in self:
+            rec.export_tucuman_filename_ret = _('Tucuman_ret_%s_%s.txt') % (str(rec.date_from), str(rec.date_to))
+            rec.export_tucuman_file_ret = base64.encodestring(rec.export_tucuman_data_ret.encode('ISO-8859-1'))
 
-    export_tucuman_file_ret = fields.Binary('Archivo TUCUMAN',compute=_compute_files_ret)
-    export_tucuman_filename_ret = fields.Char('Archivo TUCUMAN',compute=_compute_files_ret)
+    # Campos para el archivo de Retenciones
+    export_tucuman_file_ret = fields.Binary('Archivo Retenciones', compute=_compute_files_ret)
+    export_tucuman_filename_ret = fields.Char('Nombre Archivo Retenciones', compute=_compute_files_ret)
     
     @api.depends('export_tucuman_data_per')
     def _compute_files_per(self):
-        self.ensure_one()
-        self.export_tucuman_filename_per = _('Tucuman_per_%s_%s.txt') % (str(self.date_from),str(self.date_to))
-        self.export_tucuman_file_per = base64.encodestring(self.export_tucuman_data_per.encode('ISO-8859-1'))
-    export_tucuman_file_per = fields.Binary('Archivo TUCUMAN',compute=_compute_files_per)
-    export_tucuman_filename_per = fields.Char('Archivo TUCUMAN',compute=_compute_files_per)
+        """
+        Convierte el contenido de Percepciones en un archivo descargable (.txt).
+        """
+        for rec in self:
+            rec.export_tucuman_filename_per = _('Tucuman_per_%s_%s.txt') % (str(rec.date_from), str(rec.date_to))
+            rec.export_tucuman_file_per = base64.encodestring(rec.export_tucuman_data_per.encode('ISO-8859-1'))
+
+    # Campos para el archivo de Percepciones
+    export_tucuman_file_per = fields.Binary('Archivo Percepciones', compute=_compute_files_per)
+    export_tucuman_filename_per = fields.Char('Nombre Archivo Percepciones', compute=_compute_files_per)
 
 
     def compute_tucuman_data(self):
