@@ -16,7 +16,7 @@
         'base',
         'account',
         'l10n_ar',
-        #'l10n_ar_withholding',
+        'l10n_ar_withholding',
         'l10n_ar_sircar_regimenes',
     ],
     'installable': True,
