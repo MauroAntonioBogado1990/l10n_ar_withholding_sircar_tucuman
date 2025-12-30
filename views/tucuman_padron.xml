@@ -52,7 +52,7 @@
         <field name="res_model">tucuman.padron</field>
         <field name="view_mode">list,form</field>
         <field name="domain" eval="False"/>
-        <field name="view_id" ref="l10n_ar_withholding_sircar_tucuman.view_tucuman_padron_list"/>
+        <field name="view_id" ref="l10n_ar_withholding_tucuman.view_tucuman_padron_list"/>
     </record>
 
     <menuitem name="Padron IIBB Tucuman" action="action_tucuman_padron_list" id="menu_tucuman_padron_list" parent="account.account_account_menu" sequence="1"/>

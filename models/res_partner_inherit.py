@@ -35,8 +35,8 @@ class ResPartner(models.Model):
             return v
 
         # Porcentaje general configurado en la compañia (se normaliza a fracción)
-        porcentaje_general = _to_fraction(self.env.company.l10n_ar_tucuman_porcentaje_general)
-
+        #porcentaje_general = _to_fraction(self.env.company.l10n_ar_tucuman_porcentaje_general)
+        porcentaje_general = float(self.env.company.l10n_ar_tucuman_porcentaje_general or 0.0)
         if type_alicuot == 'per':
             # Percepciones (RG 116/10): coeficiente * (0.5 si CM else 1) * porcentaje_general
             alicuot = self.alicuot_per_tucuman_ids.filtered(

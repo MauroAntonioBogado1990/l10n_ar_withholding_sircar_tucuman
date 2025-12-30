@@ -6,8 +6,7 @@
             <field name="inherit_id" ref="base.view_company_form"/>
             <field name="model">res.company</field>
             <field name="arch" type="xml">
-			<page name="general_info" position="after">	
-		        <!--<notebook position="inside">-->
+		        <notebook position="inside">
                     <page string="Tucuman">
                         <group>
                             <group>
@@ -19,8 +18,7 @@
                             </group>
                         </group>
                     </page>
-			</page>
-                <!--</notebook>-->
+                </notebook>
             </field>
         </record>
     </data>

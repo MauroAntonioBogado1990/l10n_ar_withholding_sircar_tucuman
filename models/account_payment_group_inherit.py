@@ -46,7 +46,7 @@ class AccountPaymentGroupInherit(models.Model):
                 # 5. CONFIGURACIÓN TÉCNICA: Buscamos en el sistema los "papeles" necesarios
                 # Buscamos el método de pago tipo 'Retención'
                 _payment_method = self.env.ref(
-                    'l10n_ar_withholding.'
+                    'l10n_ar_withholding_automatic.'
                     'account_payment_method_out_withholding')
                 
                 # Buscamos un diario contable (Banco o Caja) para registrar el movimiento
@@ -61,7 +61,7 @@ class AccountPaymentGroupInherit(models.Model):
                     ('type_tax_use', '=', rec.partner_type),
                     ('company_id', '=', rec.company_id.id),
                     ('withholding_type', '=', 'partner_iibb_padron'),
-                    ('tax_agip_ret', '=', True)], limit=1)
+                    ('tax_tucuman_ret', '=', True)], limit=1)
                 
                 # 6. LIMPIEZA: Si ya existía un cálculo previo de esta retención para este pago,
                 # lo borramos para no duplicarlo (por si el usuario tocó el botón dos veces).
