@@ -481,7 +481,9 @@ class AccountExportTucuman(models.Model):
         invoices = self.env['account.move'].search([('move_type','in',['out_refund']),('state','=','posted'),('invoice_date','<=',self.date_to),('invoice_date','>=',self.date_from)],order='invoice_date asc')
         string = ''
         for invoice in invoices:
-            taxes = json.loads(invoice.tax_totals_json)['groups_by_subtotal']['Importe libre de impuestos']
+            #taxes = json.loads(invoice.tax_totals_json)['groups_by_subtotal']['Importe libre de impuestos']
+            groups = invoice.tax_totals.get('groups_by_subtotal', {})
+            taxes = groups.get('Importe libre de impuestos') or groups.get('Base imponible') or []
             for tax in taxes:
                 if tax['tax_group_name'] == 'Perc IIBB Tucuman':
                     #Multimoneda
@@ -586,4 +588,4 @@ class AccountExportTucuman(models.Model):
                     # CRLF
                     string = string + windows_line_ending
                     
-                self.export_agip_data_nc = string
+                self.export_tucuman_data_nc = string
