@@ -259,7 +259,9 @@ class AccountExportTucuman(models.Model):
         invoices = self.env['account.move'].search([('move_type','in',['out_invoice']),('state','=','posted'),('invoice_date','<=',self.date_to),('invoice_date','>=',self.date_from)],order='invoice_date asc')
         string = ''
         for invoice in invoices:
-            taxes = json.loads(invoice.tax_totals_json)['groups_by_subtotal']['Importe libre de impuestos']
+            groups = invoice.tax_totals.get('groups_by_subtotal', {})
+            taxes = groups.get('Importe libre de impuestos') or groups.get('Base imponible') or []
+            #taxes = json.loads(invoice.tax_totals_json)['groups_by_subtotal']['Importe libre de impuestos']
             for tax in taxes:
                 #este es un posible donde puede ser el de tucumand, habría que verificar cual es el nombre de percepción tucuman
                 if tax['tax_group_name'] == 'Perc IIBB Tucuman':
@@ -465,7 +467,7 @@ class AccountExportTucuman(models.Model):
                     list_order_tucuman.append({'Fecha':[string[-223:-213]],'Texto':string[-227:]})
                     
                 _logger.warning('******* string: {0}'.format(string))
-                self.export_agip_data_per = string
+                self.export_tucuman_data_per = string
         
         #Ordenamos Retenciones y Percepciones en un mismo txt
         ordenado = sorted(list_order_tucuman, key=lambda ret : ret['Fecha'])
